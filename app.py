@@ -94,8 +94,12 @@ st.markdown("""
         border-top: 1px solid #00d4ff;
     }
     /* Force log text to white */
-    .stText p, .stText code, .stText pre {
+    .stText p, .stText div, .stText {
         color: white !important;
+    }
+    .stText code, .stText pre {
+        color: #ffffff !important;
+        background-color: transparent !important;
     }
 </style>
 """, unsafe_allow_html=True)
