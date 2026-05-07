@@ -93,13 +93,11 @@ st.markdown("""
         padding: 1rem;
         border-top: 1px solid #00d4ff;
     }
-    /* Force log text to white */
-    .stText p, .stText div, .stText {
+    /* Force all text inside the event log area to white */
+    .event-log, .event-log p, .event-log div, .event-log span {
         color: white !important;
-    }
-    .stText code, .stText pre {
-        color: #ffffff !important;
-        background-color: transparent !important;
+        font-family: monospace;
+        font-size: 0.9rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -368,14 +366,16 @@ def real_world_mode():
         st.session_state.last_defect = "No defects detected"
         st.rerun()
     
-    # Build log entries with white text (CSS already forces .stText p to white)
+    # Build log entries with bright white inline CSS
     log_entries = [
         f"{datetime.now().strftime('%H:%M:%S')} - System ready. Robot speed: {st.session_state.robot_speed}%",
         f"{datetime.now().strftime('%H:%M:%S')} - Conveyor {'running' if st.session_state.conveyor_running else 'stopped'}",
         f"{datetime.now().strftime('%H:%M:%S')} - AI model loaded (confidence {confidence}%)",
     ]
+    st.markdown('<div class="event-log">', unsafe_allow_html=True)
     for log in log_entries:
-        st.text(log)
+        st.markdown(f'<p style="color: white; font-family: monospace; margin: 0;">{log}</p>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     
     st.info("💡 Real‑world mode simulates a factory control panel. Actual hardware integration available upon request.")
 
@@ -383,18 +383,15 @@ def real_world_mode():
 if not st.session_state.authenticated:
     show_login()
 else:
-    # Show sidebar and get selected mode
     selected_mode = show_sidebar()
     
     # Live clock (top right)
     live_time = datetime.now().strftime("%Y-%m-%d | %H:%M:%S")
     st.markdown(f'<div style="text-align: right;"><span class="live-clock">🕒 {live_time}</span></div>', unsafe_allow_html=True)
     
-    # Display the chosen mode
     if selected_mode == "📘 Demo Mode":
         demo_mode()
     else:
         real_world_mode()
     
-    # Footer (common)
     st.markdown('<div class="footer">© GlobalInternet.py – Building the future of factory automation with a Haitian touch.</div>', unsafe_allow_html=True)
