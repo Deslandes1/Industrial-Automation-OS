@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------- CUSTOM CSS (futuristic, readable, log white) ----------
+# ---------- CUSTOM CSS ----------
 st.markdown("""
 <style>
     /* Main background gradient */
@@ -93,11 +93,19 @@ st.markdown("""
         padding: 1rem;
         border-top: 1px solid #00d4ff;
     }
-    /* Force all text inside the event log area to white */
+    /* Event log white text */
     .event-log, .event-log p, .event-log div, .event-log span {
         color: white !important;
         font-family: monospace;
         font-size: 0.9rem;
+    }
+    /* Info banner */
+    .info-banner {
+        background: rgba(0,212,255,0.1);
+        border-left: 4px solid #00d4ff;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -106,12 +114,11 @@ st.markdown("""
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
-# ---------- LOGOUT FUNCTION ----------
 def logout():
     st.session_state.authenticated = False
     st.rerun()
 
-# ---------- LOGIN PAGE (colorful, with spinning globe symbols) ----------
+# ---------- LOGIN PAGE ----------
 def show_login():
     st.markdown("""
     <style>
@@ -154,7 +161,6 @@ def show_login():
             <div class="login-title">Industrial Automation OS</div>
             <p style="color: #d0d0d0;">Enter secure password to access the factory control system</p>
     """, unsafe_allow_html=True)
-    
     password = st.text_input("Password", type="password", key="login_pass")
     if st.button("🔐 Login", use_container_width=True):
         if password == "20082010":
@@ -162,10 +168,9 @@ def show_login():
             st.rerun()
         else:
             st.error("Incorrect password. Access denied.")
-    
     st.markdown("</div></div>", unsafe_allow_html=True)
 
-# ---------- SIDEBAR (common to both modes after login) ----------
+# ---------- SIDEBAR (with sales/purchase info) ----------
 def show_sidebar():
     st.sidebar.markdown("""
     <style>
@@ -196,10 +201,10 @@ def show_sidebar():
     st.sidebar.markdown("[https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.sidebar.markdown("---")
     
-    # Mode selection (only after login)
+    # Mode selection
     mode = st.sidebar.radio("🔧 Operating Mode", ["📘 Demo Mode", "🏭 Real‑World Mode"], index=0)
     
-    # Pricing (visible in both modes)
+    # Pricing table (same as before)
     st.sidebar.markdown("### 💰 Licensing (Industrial OS)")
     st.sidebar.markdown("""
     | Plan | Price (USD/year) |
@@ -210,6 +215,18 @@ def show_sidebar():
     | **Source + OEM License** | $99,999 |
     """)
     st.sidebar.info("✅ Includes 24/7 support, updates, and AI model training.")
+    
+    # Purchase / Real-world upgrade notice
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### 🛒 Ready for real hardware?")
+    st.sidebar.markdown("""
+    The **Real‑World Mode** currently runs as a **simulation**.  
+    To connect to actual robots (OPC UA, MQTT, ROS) and deploy in your factory:
+    - Purchase a license (see pricing above)
+    - Contact us for **custom integration** (hardware‑specific drivers, on‑site training)
+    """)
+    st.sidebar.markdown("**Contact sales:** [deslandes78@gmail.com](mailto:deslandes78@gmail.com)")
+    
     st.sidebar.caption("© GlobalInternet.py – Industry 4.0 ready")
     
     # Logout button
@@ -294,10 +311,19 @@ def demo_mode():
     🌐 [https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)
     """)
 
-# ---------- REAL‑WORLD MODE (with white log text) ----------
+# ---------- REAL‑WORLD MODE (simulation with upgrade note) ----------
 def real_world_mode():
     st.markdown("<h1 style='text-align: center;'>🏭 REAL‑TIME FACTORY FLOOR</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Live controls – robot speed, conveyor status, AI inspection</p>", unsafe_allow_html=True)
+    
+    # Info banner about real hardware upgrade
+    st.markdown("""
+    <div class="info-banner">
+    ⚙️ <strong>Simulation mode – ready for real hardware</strong><br>
+    This is a fully functional simulation. To connect to actual robots via OPC UA, MQTT, or ROS, 
+    <a href="#purchase" style="color:#00d4ff;">purchase a license</a> from the sidebar.
+    </div>
+    """, unsafe_allow_html=True)
     
     # Session state for simulation
     if "robot_speed" not in st.session_state:
@@ -366,7 +392,7 @@ def real_world_mode():
         st.session_state.last_defect = "No defects detected"
         st.rerun()
     
-    # Build log entries with bright white inline CSS
+    # Bright white event log
     log_entries = [
         f"{datetime.now().strftime('%H:%M:%S')} - System ready. Robot speed: {st.session_state.robot_speed}%",
         f"{datetime.now().strftime('%H:%M:%S')} - Conveyor {'running' if st.session_state.conveyor_running else 'stopped'}",
@@ -377,15 +403,13 @@ def real_world_mode():
         st.markdown(f'<p style="color: white; font-family: monospace; margin: 0;">{log}</p>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.info("💡 Real‑world mode simulates a factory control panel. Actual hardware integration available upon request.")
+    st.info("💡 This is a simulation. For real hardware integration (OPC UA / MQTT / ROS), purchase a license from the sidebar and contact us.")
 
 # ---------- MAIN APP ----------
 if not st.session_state.authenticated:
     show_login()
 else:
     selected_mode = show_sidebar()
-    
-    # Live clock (top right)
     live_time = datetime.now().strftime("%Y-%m-%d | %H:%M:%S")
     st.markdown(f'<div style="text-align: right;"><span class="live-clock">🕒 {live_time}</span></div>', unsafe_allow_html=True)
     
