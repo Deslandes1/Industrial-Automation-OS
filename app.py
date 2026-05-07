@@ -3,7 +3,7 @@ from datetime import datetime
 import random
 
 st.set_page_config(
-    page_title="Industrial Automation OS | Factory 4.0",
+    page_title="Industrial Automation OS | Demo",
     page_icon="🏭",
     layout="wide"
 )
@@ -107,6 +107,13 @@ st.markdown("""
         border-radius: 8px;
         margin: 1rem 0;
     }
+    .demo-warning {
+        background: rgba(255,100,0,0.2);
+        border-left: 4px solid #ffaa33;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -159,10 +166,10 @@ def show_login():
         <div class="login-card">
             <div class="spinning-globe">🌍</div>
             <div class="login-title">Industrial Automation OS</div>
-            <p style="color: #d0d0d0;">Enter secure password to access the factory control system</p>
+            <p style="color: #d0d0d0;">Demo version – simulation only</p>
     """, unsafe_allow_html=True)
     password = st.text_input("Password", type="password", key="login_pass")
-    if st.button("🔐 Login", use_container_width=True):
+    if st.button("🔐 Login (Demo)", use_container_width=True):
         if password == "20082010":
             st.session_state.authenticated = True
             st.rerun()
@@ -170,7 +177,7 @@ def show_login():
             st.error("Incorrect password. Access denied.")
     st.markdown("</div></div>", unsafe_allow_html=True)
 
-# ---------- SIDEBAR (with sales/purchase info) ----------
+# ---------- SIDEBAR (with clear demo/production distinction) ----------
 def show_sidebar():
     st.sidebar.markdown("""
     <style>
@@ -191,6 +198,7 @@ def show_sidebar():
     """, unsafe_allow_html=True)
     st.sidebar.markdown("## **GlobalInternet.py**")
     st.sidebar.markdown("### Industrial Automation OS")
+    st.sidebar.markdown("**⚠️ DEMO VERSION – SIMULATION ONLY**")
     st.sidebar.markdown("---")
     st.sidebar.markdown("**Lead Engineer:** Gesner Deslandes")
     st.sidebar.markdown("---")
@@ -201,11 +209,11 @@ def show_sidebar():
     st.sidebar.markdown("[https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)")
     st.sidebar.markdown("---")
     
-    # Mode selection
+    # Mode selection (demo only)
     mode = st.sidebar.radio("🔧 Operating Mode", ["📘 Demo Mode", "🏭 Real‑World Mode"], index=0)
     
-    # Pricing table (same as before)
-    st.sidebar.markdown("### 💰 Licensing (Industrial OS)")
+    # Pricing table (production version)
+    st.sidebar.markdown("### 💰 Production License (Real Hardware)")
     st.sidebar.markdown("""
     | Plan | Price (USD/year) |
     |------|------------------|
@@ -214,19 +222,17 @@ def show_sidebar():
     | **Enterprise (unlimited)** | $49,999 |
     | **Source + OEM License** | $99,999 |
     """)
-    st.sidebar.info("✅ Includes 24/7 support, updates, and AI model training.")
+    st.sidebar.info("✅ Production version includes OPC UA, MQTT, ROS integration, 24/7 support, and deployment assistance.")
     
-    # Purchase / Real-world upgrade notice
+    # Purchase notice
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 🛒 Ready for real hardware?")
+    st.sidebar.markdown("### 🛒 To get the real production version")
     st.sidebar.markdown("""
-    The **Real‑World Mode** currently runs as a **simulation**.  
-    To connect to actual robots (OPC UA, MQTT, ROS) and deploy in your factory:
-    - Purchase a license (see pricing above)
-    - Contact us for **custom integration** (hardware‑specific drivers, on‑site training)
+    - This online demo is **simulation only**.  
+    - After purchase, you receive the full software package (backend + dashboard + hardware drivers).  
+    - You install it on your own server or factory PC – **we do not host your production data**.  
+    - Contact us to start: [deslandes78@gmail.com](mailto:deslandes78@gmail.com)
     """)
-    st.sidebar.markdown("**Contact sales:** [deslandes78@gmail.com](mailto:deslandes78@gmail.com)")
-    
     st.sidebar.caption("© GlobalInternet.py – Industry 4.0 ready")
     
     # Logout button
@@ -237,12 +243,20 @@ def show_sidebar():
 
 # ---------- DEMO MODE ----------
 def demo_mode():
-    st.markdown("<h1 style='text-align: center;'>🏭 Industrial Automation OS</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Complete operating system for factories – orchestrating humanoid robots, conveyor belts, and quality inspection AI.</p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>🏭 Industrial Automation OS (Demo)</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Concept demonstration – not connected to real hardware</p>", unsafe_allow_html=True)
+    
+    # Warning banner
+    st.markdown("""
+    <div class="demo-warning">
+    ⚠️ <strong>This is a simulation demo</strong><br>
+    No physical robots or hardware are connected. The real production version (with OPC UA, MQTT, ROS) is delivered after purchase.
+    </div>
+    """, unsafe_allow_html=True)
     
     col_status, col_tech = st.columns(2)
     with col_status:
-        st.markdown('<div class="status-pill">📅 Status: Planning – Q4 2026</div>', unsafe_allow_html=True)
+        st.markdown('<div class="status-pill">📅 Status: Production ready (Q4 2026)</div>', unsafe_allow_html=True)
     with col_tech:
         st.markdown('<div class="status-pill">⚡ Key technology: Industry 4.0 ready</div>', unsafe_allow_html=True)
     
@@ -277,7 +291,7 @@ def demo_mode():
     with tech_col1:
         st.markdown("""
         - **Orchestration engine:** Kubernetes + custom scheduler
-        - **Robot APIs:** REST, gRPC, WebSocket
+        - **Robot APIs:** REST, gRPC, WebSocket (production: OPC UA, MQTT)
         - **Security:** Zero‑trust architecture, TLS 1.3, ISO 27001 ready
         - **Edge AI:** TensorFlow Lite, OpenVINO, NVIDIA Jetson
         """)
@@ -290,7 +304,7 @@ def demo_mode():
         """)
     
     st.markdown("---")
-    st.markdown("## 🗓️ Roadmap")
+    st.markdown("## 🗓️ Roadmap for Production Version")
     timeline = """
     | Milestone | Estimated Completion |
     |-----------|----------------------|
@@ -302,26 +316,26 @@ def demo_mode():
     st.markdown(timeline)
     
     st.markdown("---")
-    st.markdown("## 📢 Partner with us")
+    st.markdown("## 📢 Buy the Production Version")
     st.markdown("""
-    We are looking for **early adopters** and **integration partners** to pilot Industrial Automation OS.  
-    Contact us for a demo or to discuss custom features.
+    **This online demo does not connect to hardware.**  
+    To get the full system with OPC UA, MQTT, ROS integration and deployment support, purchase a license (sidebar) and we will deliver the software package to run on your own servers.
 
     📞 (509)-47385663  |  ✉️ deslandes78@gmail.com  
     🌐 [https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/](https://globalinternetsitepy-abh7v6tnmskxxnuplrdcgk.streamlit.app/)
     """)
 
-# ---------- REAL‑WORLD MODE (simulation with upgrade note) ----------
+# ---------- REAL‑WORLD MODE (simulation with upgrade notice) ----------
 def real_world_mode():
-    st.markdown("<h1 style='text-align: center;'>🏭 REAL‑TIME FACTORY FLOOR</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Live controls – robot speed, conveyor status, AI inspection</p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>🏭 REAL‑TIME FACTORY FLOOR (SIMULATION)</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Interactive simulation – no actual hardware connected</p>", unsafe_allow_html=True)
     
-    # Info banner about real hardware upgrade
+    # Prominent warning
     st.markdown("""
-    <div class="info-banner">
-    ⚙️ <strong>Simulation mode – ready for real hardware</strong><br>
-    This is a fully functional simulation. To connect to actual robots via OPC UA, MQTT, or ROS, 
-    <a href="#purchase" style="color:#00d4ff;">purchase a license</a> from the sidebar.
+    <div class="demo-warning">
+    🛑 <strong>IMPORTANT – THIS IS A SIMULATION</strong><br>
+    The sliders and toggles below do <strong>not</strong> control any physical robot or conveyor.  
+    They demonstrate the feel of the production system. After purchasing a license, you receive the actual backend that communicates with real hardware via OPC UA / MQTT / ROS.
     </div>
     """, unsafe_allow_html=True)
     
@@ -337,27 +351,28 @@ def real_world_mode():
     
     col_speed, col_conveyor, col_inspect = st.columns(3)
     with col_speed:
-        st.markdown("### 🤖 Robot Speed")
+        st.markdown("### 🤖 Robot Speed (Simulated)")
         speed = st.slider("Speed (0–100%)", 0, 100, st.session_state.robot_speed, key="speed_slider")
         if speed != st.session_state.robot_speed:
             st.session_state.robot_speed = speed
-            st.success(f"Robot speed set to {speed}%")
+            st.success(f"Simulated robot speed set to {speed}%")
         st.metric("Current Speed", f"{st.session_state.robot_speed}%")
+        st.caption("In production version, this slider sends OPC UA commands to real robot.")
     with col_conveyor:
-        st.markdown("### 📦 Conveyor Belt")
+        st.markdown("### 📦 Conveyor Belt (Simulated)")
         running = st.toggle("Conveyor Running", value=st.session_state.conveyor_running)
         if running != st.session_state.conveyor_running:
             st.session_state.conveyor_running = running
             state = "RUNNING" if running else "STOPPED"
-            st.warning(f"Conveyor {state}")
+            st.warning(f"Simulated conveyor {state}")
         st.metric("Status", "Active" if st.session_state.conveyor_running else "Idle")
     with col_inspect:
-        st.markdown("### 🔍 AI Inspection")
+        st.markdown("### 🔍 AI Inspection (Simulated)")
         if st.button("Run Quality Check"):
             defect = random.random() < 0.15
             if defect:
                 st.session_state.defect_rate += 1
-                st.session_state.last_defect = f"Defect found at {datetime.now().strftime('%H:%M:%S')}"
+                st.session_state.last_defect = f"Simulated defect found at {datetime.now().strftime('%H:%M:%S')}"
                 st.error(st.session_state.last_defect)
             else:
                 st.success(f"Inspection passed – {datetime.now().strftime('%H:%M:%S')}")
@@ -365,7 +380,7 @@ def real_world_mode():
         st.caption(st.session_state.last_defect if st.session_state.defect_rate > 0 else "No defects yet")
     
     st.markdown("---")
-    st.markdown("## 📊 Live Factory Metrics")
+    st.markdown("## 📊 Live Factory Metrics (Simulated)")
     metric_col1, metric_col2, metric_col3 = st.columns(3)
     throughput = round((st.session_state.robot_speed / 100) * (1 if st.session_state.conveyor_running else 0) * 120, 1)
     with metric_col1:
@@ -384,7 +399,7 @@ def real_world_mode():
         st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown("---")
-    st.markdown("## 📝 Event Log")
+    st.markdown("## 📝 Event Log (Simulated)")
     if st.button("Reset Simulation"):
         st.session_state.robot_speed = 50
         st.session_state.conveyor_running = True
@@ -392,18 +407,17 @@ def real_world_mode():
         st.session_state.last_defect = "No defects detected"
         st.rerun()
     
-    # Bright white event log
     log_entries = [
-        f"{datetime.now().strftime('%H:%M:%S')} - System ready. Robot speed: {st.session_state.robot_speed}%",
-        f"{datetime.now().strftime('%H:%M:%S')} - Conveyor {'running' if st.session_state.conveyor_running else 'stopped'}",
-        f"{datetime.now().strftime('%H:%M:%S')} - AI model loaded (confidence {confidence}%)",
+        f"{datetime.now().strftime('%H:%M:%S')} - SIMULATION: System ready. Robot speed: {st.session_state.robot_speed}%",
+        f"{datetime.now().strftime('%H:%M:%S')} - SIMULATION: Conveyor {'running' if st.session_state.conveyor_running else 'stopped'}",
+        f"{datetime.now().strftime('%H:%M:%S')} - SIMULATION: AI model loaded (confidence {confidence}%)",
     ]
     st.markdown('<div class="event-log">', unsafe_allow_html=True)
     for log in log_entries:
         st.markdown(f'<p style="color: white; font-family: monospace; margin: 0;">{log}</p>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.info("💡 This is a simulation. For real hardware integration (OPC UA / MQTT / ROS), purchase a license from the sidebar and contact us.")
+    st.info("💡 This is a simulation. The production version connects to real robots via OPC UA, MQTT, or ROS after you purchase a license.")
 
 # ---------- MAIN APP ----------
 if not st.session_state.authenticated:
@@ -418,4 +432,4 @@ else:
     else:
         real_world_mode()
     
-    st.markdown('<div class="footer">© GlobalInternet.py – Building the future of factory automation with a Haitian touch.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">© GlobalInternet.py – Simulation demo. Production version with hardware integration available upon purchase.</div>', unsafe_allow_html=True)
